@@ -6,8 +6,8 @@ const csvtojson = require("csvtojson");
 const ejs = require("ejs");
 const pdf = require("html-pdf");
 const crypto = require("crypto");
-const fs = require('fs');
-const puppeteer = require('puppeteer');
+const fs = require("fs");
+const puppeteer = require("puppeteer");
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -18,27 +18,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 async function createFile(renderedFile, path) {
   const browser = await puppeteer.launch({
-    args: [`--window-size=${1024},${1024}`],
-    headless: 'new'
+    headless: true,
+    ignoreDefaultArgs: ["--disable-extensions"],
+    args: ["--no-sandbox", "--use-gl=egl", "--disable-setuid-sandbox"],
+    ignoreHTTPSErrors: true,
   });
-    try {
-        const page = await browser.newPage();
-        await page.setContent(renderedFile, {
-            timeout: 30000,
-            waitUntil: 'load' // or one of 'domcontentloaded' | 'networkidle0' | 'networkidle2'
-        });
+  try {
+    const page = await browser.newPage();
+    await page.setContent(renderedFile, {
+      timeout: 30000,
+      waitUntil: "load", // or one of 'domcontentloaded' | 'networkidle0' | 'networkidle2'
+    });
 
-        await page.pdf({
-          path,
-          format: 'A4',
-          printBackground: true,
-          displayHeaderFooter: true,
-        });
-    } catch (e) {
-        console.error(e);
-    } finally {
-        await browser.close();
-    }
+    await page.pdf({
+      path,
+      format: "A4",
+      printBackground: true,
+      displayHeaderFooter: true,
+    });
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await browser.close();
+  }
 }
 
 app.get("/", (req, res) => {
@@ -59,12 +61,13 @@ app.post("/csv", async (req, res) => {
         fs.writeFileSync(`./debug/${filename}.html`, renderedFile);
       }
 
-      createFile(renderedFile, `./public/pdf/${filename}.pdf`)
-        .then(function () {
+      createFile(renderedFile, `./public/pdf/${filename}.pdf`).then(
+        function () {
           res.render("partials/upload_success", {
             filename,
           });
-        });
+        }
+      );
     }
   );
 });
