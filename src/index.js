@@ -17,17 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 async function createFile(renderedFile, path) {
   const browser = await puppeteer.launch({
-    headless: 'new',
     ignoreDefaultArgs: ["--disable-extensions"],
-    args: [
-      "--disable-gpu",
-      "--disable-dev-shm-usage",
-      "--disable-setuid-sandbox",
-      "--no-first-run",
-      "--no-sandbox",
-      "--no-zygote",
-      "--single-process",
-    ],
+    args: ['--no-sandbox', '--disable-setuid-sandbox'] ,
     ignoreHTTPSErrors: true,
   });
   try {
