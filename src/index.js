@@ -30,7 +30,6 @@ async function createFile(renderedFile, path) {
       "--single-process",
     ],
     ignoreHTTPSErrors: true,
-    executablePath: process.env.PATH,
   });
   try {
     const page = await browser.newPage();
