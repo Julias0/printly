@@ -22,6 +22,7 @@ async function createFile(renderedFile, path) {
     ignoreDefaultArgs: ["--disable-extensions"],
     args: ["--no-sandbox", "--use-gl=egl", "--disable-setuid-sandbox"],
     ignoreHTTPSErrors: true,
+    executablePath: process.env.PATH
   });
   try {
     const page = await browser.newPage();
