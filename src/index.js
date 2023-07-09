@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const upload = require("express-fileupload");
 const csvtojson = require("csvtojson");
 const ejs = require("ejs");
-const pdf = require("html-pdf");
 const crypto = require("crypto");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
