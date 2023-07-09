@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 async function createFile(renderedFile, path) {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: 'new',
     ignoreDefaultArgs: ["--disable-extensions"],
     args: [
       "--disable-gpu",
@@ -80,6 +80,6 @@ app.post("/csv", async (req, res) => {
   );
 });
 
-app.listen(3000, () => {
-  console.log("Application running on port 3000");
+app.listen(process.env.PORT, () => {
+  console.log(`Application running on port ${process.env.PORT}`);
 });
