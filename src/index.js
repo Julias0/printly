@@ -7,6 +7,7 @@ const ejs = require("ejs");
 const crypto = require("crypto");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
+require('dotenv').config();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -18,8 +19,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 async function createFile(renderedFile, path) {
   const browser = await puppeteer.launch({
     ignoreDefaultArgs: ["--disable-extensions"],
-    args: ['--no-sandbox', '--disable-setuid-sandbox'] ,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--single-process', '--no-zygote'] ,
     ignoreHTTPSErrors: true,
+    executablePath: process.env.NODE_ENV === 'production' ? process.env.PUPPETEER_EXECUTABLE_PATH: puppeteer.executablePath()
   });
   try {
     const page = await browser.newPage();
