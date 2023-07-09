@@ -20,9 +20,17 @@ async function createFile(renderedFile, path) {
   const browser = await puppeteer.launch({
     headless: true,
     ignoreDefaultArgs: ["--disable-extensions"],
-    args: ["--no-sandbox", "--use-gl=egl", "--disable-setuid-sandbox"],
+    args: [
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--disable-setuid-sandbox",
+      "--no-first-run",
+      "--no-sandbox",
+      "--no-zygote",
+      "--single-process",
+    ],
     ignoreHTTPSErrors: true,
-    executablePath: process.env.PATH
+    executablePath: process.env.PATH,
   });
   try {
     const page = await browser.newPage();
