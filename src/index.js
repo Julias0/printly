@@ -57,7 +57,7 @@ app.post("/csv", async (req, res) => {
     },
     (err, renderedFile) => {
       const filename = crypto.randomBytes(16).toString("hex");
-      if (process.env.DEBUG || true) {
+      if (process.env.NODE_ENV !== 'production') {
         fs.writeFileSync(`./debug/${filename}.html`, renderedFile);
       }
 
